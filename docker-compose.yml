@@ -1,0 +1,39 @@
+services:
+  app:
+    build:
+      context: .
+      target: dev 
+    volumes:
+      - .:/app
+      - rubygems:/usr/local/bundle
+    environment:
+      - DB_HOST=db
+      - DB_NAME=otel_rails_development
+    entrypoint: ./bin/docker-entrypoint
+    ports:
+      - 3000:3000
+    command: ./bin/rails server -b 0.0.0.0
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:16
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=otel_rails_development
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    healthcheck:
+      test: pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}
+      interval: 10s
+      retries: 5
+      timeout: 10s
+
+volumes:
+  pgdata:
+  rubygems:

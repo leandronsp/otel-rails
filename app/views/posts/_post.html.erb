@@ -1,0 +1,27 @@
+<div id="<%= dom_id post %>">
+  <p>
+    <strong>Title:</strong>
+    <%= post.title %>
+  </p>
+
+  <p>
+    <strong>Body:</strong>
+    <%= post.body %>
+  </p>
+
+  <p>
+    <strong>Published:</strong>
+    <%= post.published %>
+  </p>
+
+  <h1>Comments</h1>
+
+  <div id="comments">
+    <% post.comments.each do |comment| %>
+      <%= render comment %>
+    <% end %>
+
+    <p>Insert new comment:</p>
+    <%= render "comments/form", comment: post.comments.build %>
+  </div>
+</div>
