@@ -1,12 +1,26 @@
 build.release: build
 	@docker build -t otel-rails-release --target release .
 
+push.release: build.release
+	@docker tag otel-rails-release leandronsp/otel-rails-release
+	@docker push leandronsp/otel-rails-release
+
 production.create_network:
 	@docker network create otel_production
 
 production.deploy:
 	@docker rm -f otel-app-production
 	@make production.run_app
+
+production.k8s.create:
+	@kubectl apply -f iac/k8s/
+
+production.k8s.deploy:
+	@kubectl delete -f iac/k8s/app-pod.yml
+	@kubectl apply -f iac/k8s/app-pod.yml
+
+production.k8s.destroy:
+	@kubectl delete -f iac/k8s/
 
 production.up:
 	@make production.run_db

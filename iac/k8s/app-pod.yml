@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: otel-app
+  name: otel-app
+spec:
+  containers:
+  - image: leandronsp/otel-rails-release
+    name: otel-app
+    env:
+      - name: DB_HOST
+        value: otel-db
+      - name: DB_NAME
+        value: otel_rails_production
+      - name: DB_USERNAME
+        value: otel
+      - name: DB_PASSWORD
+        value: otel
+  restartPolicy: Always

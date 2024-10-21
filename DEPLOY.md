@@ -16,4 +16,22 @@ $ make production.deploy
 
 ## Deploy using Kubernetes
 
-TODO
+Provisioning:
+
+```bash
+$ make production.k8s.create
+```
+
+Deploy:
+
+```bash
+$ make build.release
+$ make push.release
+$ make production.k8s.deploy
+```
+
+Destroy:
+
+```bash
+$ make production.k8s.destroy
+```
